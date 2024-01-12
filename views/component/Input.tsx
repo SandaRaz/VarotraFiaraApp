@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  ColorValue,
+  Keyboard,
+  KeyboardTypeOptions,
   StyleProp,
   StyleSheet,
   Text,
@@ -14,23 +17,29 @@ import {EyeIcon, EyeSlashIcon} from 'react-native-heroicons/solid';
 function Input({
   putValueTo,
   title,
+  titleColor,
   icon,
   iconColor,
   placeholder,
+  placeHolderColor,
   style,
   textStyle,
   isPassword,
   valueToConfirm,
+  keyboardType,
 }: {
   putValueTo?: (text: string) => void;
   title?: string;
+  titleColor?: string;
   icon?: React.JSX.Element;
   iconColor?: string;
   placeholder: string;
+  placeHolderColor?: ColorValue;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   isPassword?: boolean;
   valueToConfirm?: string;
+  keyboardType?: KeyboardTypeOptions;
 }): React.JSX.Element {
   // const iconColor: string = 'white';
   // const defaultIconColor: string = 'rgba(21,116,59, 1)';
@@ -39,6 +48,10 @@ function Input({
     iconColor = defaultIconColor;
   }
   const iconSize: string | number = '100%';
+  let placeholderColor: ColorValue = 'rgba(250,250,250,0.5)';
+  if (placeHolderColor !== undefined) {
+    placeholderColor = placeHolderColor;
+  }
 
   let iconWithStyle = null;
   if (icon != null) {
@@ -86,9 +99,30 @@ function Input({
     }
   };
 
+  const textInputRef = useRef<TextInput>(null);
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        if (textInputRef.current) {
+          textInputRef.current.blur();
+        }
+      },
+    );
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <View>
-      <Text style={styles.title}>{title}</Text>
+      <Text
+        style={[
+          styles.title,
+          titleColor !== undefined ? {color: titleColor} : null,
+        ]}>
+        {title}
+      </Text>
       <View style={[styles.container, style]}>
         <View style={styles.inputContainer}>
           <View style={styles.iconContainer}>
@@ -97,10 +131,12 @@ function Input({
           <TextInput
             style={[styles.inputText, textStyle, {color: passwordTextColor}]}
             placeholder={placeholder}
-            placeholderTextColor={'rgba(250,250,250,0.5)'}
+            placeholderTextColor={placeholderColor}
             secureTextEntry={masquerMotDePasse}
             value={text}
             onChangeText={handleInput}
+            keyboardType={keyboardType}
+            ref={textInputRef}
           />
 
           {/*-------------- Gestion mot de passe ---------------*/}
@@ -125,8 +161,9 @@ function Input({
 const styles = StyleSheet.create({
   container: {
     width: '90%',
-    height: 60,
+    height: 50,
     backgroundColor: 'rgba(250,250,250,0.2)',
+    borderRadius: 10,
 
     alignSelf: 'center',
     justifyContent: 'center',

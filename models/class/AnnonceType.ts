@@ -58,6 +58,18 @@ type AnnonceData = {
   images: ImageData[] | null | undefined;
 };
 
+type NotificationData = {
+  id: string | number;
+  dateNotification: string;
+  contenu: string;
+};
+
+type BoiteNotificationData = {
+  id: string | number;
+  proprietaire: UtilisateurData;
+  notifications: NotificationData[];
+};
+
 export type {
   CategorieData,
   MarqueData,
@@ -67,4 +79,6 @@ export type {
   ImageData,
   UtilisateurData,
   AnnonceData,
+  NotificationData,
+  BoiteNotificationData,
 };

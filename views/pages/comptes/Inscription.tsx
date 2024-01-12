@@ -1,13 +1,13 @@
 import {
-  ImageBackground,
+  ImageBackground, KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-} from 'react-native';
+  View
+} from "react-native";
 import GlobalStyles from '../../assets/GlobalStyles.tsx';
 import React, {useState} from 'react';
 import {
@@ -64,6 +64,7 @@ function Inscription(): React.JSX.Element {
   const genres: Option[] = [];
   genres.push({value: 'masculin', label: 'Masculin'});
   genres.push({value: 'feminin', label: 'Féminin'});
+  genres.push({value: 'aaa', label: 'Féminin'});
 
   const nationalites: Option[] = [];
   nationalites.push({value: 'NAT0001', label: 'Madagascar'});
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
   },
 
   buttonLabel: {
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: 'Poppins-Light',
   },
 });

@@ -113,7 +113,8 @@ function Select({
 const styles = StyleSheet.create({
   container: {
     width: '90%',
-    height: 60,
+    height: 50,
+    borderRadius: 10,
     backgroundColor: 'rgba(250,250,250,0.2)',
 
     alignSelf: 'center',
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
 
   optionContainer: {
     position: 'absolute',
-    top: 108,
+    top: 90,
     zIndex: 1,
     width: '90%',
     backgroundColor: 'white',
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
   },
 
   option: {
-    minHeight: 60,
+    minHeight: 50,
     borderBottomColor: 'grey',
     borderBottomWidth: 2,
     paddingLeft: '5%',
@@ -208,8 +209,9 @@ const styles = StyleSheet.create({
   },
 
   optionText: {
+    color: 'rgb(30,30,30)',
     fontFamily: 'Poppins-Regular',
-    fontSize: 18,
+    fontSize: 15,
   },
 });
 

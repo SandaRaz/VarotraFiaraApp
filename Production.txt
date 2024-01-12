@@ -1,0 +1,10 @@
+#Prod:	
+npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+Si erreur: creer le dossier assets ./android/app/src/main/assets
+
+#Build apk:
+cd android
+gradlew assembleRelease
+
+#Installation (cmd facultative):
+adb install -r android/app/build/outputs/apk/release/app-release.apk

@@ -19,7 +19,7 @@ import Input from '../../component/Input.tsx';
 import Bouton from '../../component/Bouton.tsx';
 import {useNavigation} from '@react-navigation/native';
 
-function Inscription2(): React.JSX.Element {
+function Login(): React.JSX.Element {
   const navigation = useNavigation<any>();
 
   const iconColor = '#cd1f90';
@@ -37,11 +37,6 @@ function Inscription2(): React.JSX.Element {
     setMdp(value);
   };
 
-  const [getConfirmedMdp, setConfirmedMdp] = useState('');
-  const handleSetConfirmedMdp = (value: string) => {
-    setConfirmedMdp(value);
-  };
-
   // -----------------------------------------------------------
 
   return (
@@ -57,12 +52,12 @@ function Inscription2(): React.JSX.Element {
       <View style={GlobalStyles.titleBar}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('CompteStack', {screen: 'Inscription'});
+            navigation.navigate('NavbarStack', {screen: 'Annonces'});
           }}
           style={GlobalStyles.titleBarIcon}>
           <ArrowLeftIcon color={'#6C40C3'} size={'60%'} />
         </TouchableOpacity>
-        <Text style={GlobalStyles.titleBarLabel}>Finalisation</Text>
+        <Text style={GlobalStyles.titleBarLabel}>Connexion</Text>
       </View>
 
       <ScrollView
@@ -88,18 +83,17 @@ function Inscription2(): React.JSX.Element {
             putValueTo={handleSetMdp}
           />
 
-          <Input
-            title={'Confirmer le mot de passe'}
-            placeholder={'mot de passe'}
-            icon={<LockClosedIcon />}
-            iconColor={iconColor}
-            isPassword={true}
-            valueToConfirm={getMdp}
-            putValueTo={handleSetConfirmedMdp}
-          />
           <View style={[styles.buttonContainer]}>
             <Bouton
-              label={"S'inscrire"}
+              label={"Pas de Compte ? S'inscrire"}
+              labelStyle={styles.buttonSBLabel}
+              style={[styles.buttonSB]}
+              onPress={() => {
+                navigation.navigate('CompteStack', {screen: 'Inscription'});
+              }}
+            />
+            <Bouton
+              label={'Se connecter'}
               labelStyle={styles.buttonLabel}
               style={[
                 styles.button,
@@ -160,6 +154,19 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Poppins-Light',
   },
+
+  buttonSB: {
+    width: '45%',
+    height: '100%',
+
+    marginLeft: '5%',
+    backgroundColor: 'rgba(250,250,250,0)',
+  },
+
+  buttonSBLabel: {
+    fontSize: 13,
+    fontFamily: 'Poppins-Light',
+  },
 });
 
-export default Inscription2;
+export default Login;

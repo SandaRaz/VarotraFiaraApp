@@ -9,6 +9,8 @@ import {
 import {ScrollView, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {AnnonceData} from '../../../../models/class/AnnonceType.ts';
+import {useState} from 'react';
+import ModifStatut from '../ModifStatut.tsx';
 
 function Annonce({
   annonceData,
@@ -17,12 +19,16 @@ function Annonce({
   annonceData: AnnonceData;
   style: StyleProp<ViewStyle>;
 }): React.JSX.Element {
+  const [showStatut, toogleShowStatut] = useState(false);
   let statut = null;
   if (annonceData.statut == 3) {
     statut = <Text style={styles.statut}>dispo</Text>;
   } else if (annonceData.statut == 6) {
     statut = <Text style={styles.statut}>vendu</Text>;
   }
+  const handleToogleShowStatut = () => {
+    toogleShowStatut(!showStatut);
+  };
 
   const screenWidth = Dimensions.get('window').width;
   const marginBetweenImages = 0.03 * screenWidth;
@@ -39,7 +45,11 @@ function Annonce({
           <Text style={styles.nomProprietaire}>
             {annonceData.proprietaire.prenoms} {annonceData.proprietaire.nom}
           </Text>
-          <TouchableOpacity>{statut}</TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statutBorder}
+            onPress={handleToogleShowStatut}>
+            {statut}
+          </TouchableOpacity>
         </View>
         <Text style={styles.dateAnnonce}>{annonceData.dataAnnonce}</Text>
         <View style={styles.descriptionRow}>
@@ -99,6 +109,13 @@ function Annonce({
         ))}
         <View style={styles.imageContainer} />
       </ScrollView>
+
+      {showStatut ? (
+        <ModifStatut
+          idAnnonce={'ANC0001'}
+          handleShowModifStatut={handleToogleShowStatut}
+        />
+      ) : null}
     </View>
   );
 }
@@ -110,21 +127,31 @@ const styles = StyleSheet.create({
 
     marginTop: '1%',
     marginBottom: '1%',
+
+    // backgroundColor: 'rgba(250,250,250,0.5)',
+  },
+
+  statutBorder: {
+    width: '20%',
+    height: 'auto',
+
+    borderWidth: 2,
+    borderColor: '#cd1f90',
+    borderRadius: 20,
+
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   statut: {
-    borderWidth: 2,
-    borderColor: '#9937AE',
-    borderRadius: 20,
-
     color: 'white',
     fontSize: 13,
     fontFamily: 'Poppins-Regular',
 
-    paddingLeft: '3%',
-    paddingRight: '3%',
-    paddingTop: '2%',
-    paddingBottom: '0%',
+    // paddingLeft: '3%',
+    // paddingRight: '3%',
+    // paddingTop: '2%',
+    // paddingBottom: '0%',
   },
 
   nomProprietaire: {
@@ -171,7 +198,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
 
-    color: '#9937AE',
+    color: '#cd1f90',
     fontSize: 15,
     fontFamily: 'Poppins-Bold',
   },

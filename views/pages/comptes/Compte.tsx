@@ -1,9 +1,9 @@
 import {Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import Connexion from './Connexion.tsx';
 import Inscription from './Inscription.tsx';
 import Inscription2 from './Inscription2.tsx';
+import Login from './Login.tsx';
 
 function Compte(): React.JSX.Element {
   return (
@@ -30,7 +30,7 @@ const CompteStack: React.FC = () => {
       />
       <Stack.Screen
         name={'Login'}
-        component={Connexion}
+        component={Login}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

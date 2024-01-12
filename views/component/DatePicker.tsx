@@ -18,14 +18,32 @@ function parseDate(date: Date): string {
   );
 }
 
+function parseDateHour(date: Date): string {
+  return (
+    date.getFullYear() +
+    '-' +
+    (date.getMonth() + 1) +
+    '-' +
+    date.getDate() +
+    ' ' +
+    date.getHours() +
+    ':' +
+    date.getMinutes() +
+    ':' +
+    date.getSeconds()
+  );
+}
+
 function DatePicker({
   title,
+  titleColor,
   putValueTo,
   icon,
   iconColor,
   style,
 }: {
   title: string;
+  titleColor?: string;
   putValueTo: (value: any) => void;
   icon?: React.JSX.Element;
   iconColor?: string;
@@ -64,7 +82,13 @@ function DatePicker({
 
   return (
     <View>
-      <Text style={styles.title}>{title}</Text>
+      <Text
+        style={[
+          styles.title,
+          titleColor !== undefined ? {color: titleColor} : null,
+        ]}>
+        {title}
+      </Text>
       <TouchableOpacity
         onPress={handeToogleShowDate}
         style={[styles.container, style]}>
@@ -90,7 +114,8 @@ function DatePicker({
 const styles = StyleSheet.create({
   container: {
     width: '90%',
-    height: 60,
+    height: 50,
+    borderRadius: 10,
     backgroundColor: 'rgba(250,250,250,0.2)',
 
     alignSelf: 'center',
@@ -190,5 +215,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export {parseDate};
+export {parseDate, parseDateHour};
 export default DatePicker;
