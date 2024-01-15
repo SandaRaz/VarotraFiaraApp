@@ -24,6 +24,7 @@ function Input({
   placeHolderColor,
   style,
   textStyle,
+  containerStyle,
   isPassword,
   valueToConfirm,
   keyboardType,
@@ -37,6 +38,7 @@ function Input({
   placeHolderColor?: ColorValue;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
   isPassword?: boolean;
   valueToConfirm?: string;
   keyboardType?: KeyboardTypeOptions;
@@ -115,7 +117,7 @@ function Input({
   }, []);
 
   return (
-    <View>
+    <View style={containerStyle}>
       <Text
         style={[
           styles.title,

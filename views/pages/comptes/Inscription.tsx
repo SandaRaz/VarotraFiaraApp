@@ -1,13 +1,13 @@
 import {
-  ImageBackground, KeyboardAvoidingView,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 import GlobalStyles from '../../assets/GlobalStyles.tsx';
 import React, {useState} from 'react';
 import {

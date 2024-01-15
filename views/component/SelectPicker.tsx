@@ -9,13 +9,14 @@ import {
   ViewStyle,
 } from 'react-native';
 import {ChevronDownIcon, ChevronUpIcon} from 'react-native-heroicons/solid';
+import Picker, {PickerStyle} from 'react-native-picker-select';
 
 export interface Option {
   value: any;
   label: string;
 }
 
-function Select({
+function SelectPicker({
   options,
   putSelectedValueTo,
   title,
@@ -25,13 +26,13 @@ function Select({
   style,
   containerStyle,
 }: {
-  options: Option[] | null;
+  options: Option[];
   putSelectedValueTo: (value: any) => void;
   title: string;
   placeholder?: string;
   icon?: React.JSX.Element;
   iconColor?: string;
-  style?: StyleProp<ViewStyle>;
+  style?: PickerStyle;
   containerStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
 }): React.JSX.Element {
   const defaultIconColor: string = '#1db954';
@@ -48,71 +49,16 @@ function Select({
     });
   }
 
-  const [selectedValue, setSelectedValue] = useState('');
-  const [showSelect, toogleShowSelect] = useState(false);
-
-  /* ------ Event Handler Callback ------ */
-  const handleToogleShowSelect = () => {
-    toogleShowSelect(!showSelect);
-  };
-  const handleSelectingValue = (option: Option) => {
-    handleToogleShowSelect();
-    setSelectedValue(option.label);
-    putSelectedValueTo(option.value);
-  };
-  /* ------------------------------------ */
-
   return (
     <View style={containerStyle}>
       <Text style={styles.title}>{title}</Text>
-      <TouchableOpacity
-        onPress={handleToogleShowSelect}
-        style={[styles.container, style]}>
-        <View style={styles.content}>
-          <View style={styles.iconContainer}>
-            {iconWithStyle != null ? iconWithStyle : null}
-          </View>
-
-          <View style={styles.valueTextContainer}>
-            <Text style={styles.valueText}>
-              {selectedValue !== '' ? selectedValue : placeholder}
-            </Text>
-          </View>
-
-          <View style={styles.iconContainer}>
-            {showSelect ? (
-              <ChevronUpIcon color={'lightgrey'} size={'70%'} />
-            ) : (
-              <ChevronDownIcon color={'lightgrey'} size={'70%'} />
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
-
-      {/* ------ En dessous la liste qui s'ouvrira lorsque showSelect est true ----- */}
-
-      {showSelect ? (
-        <View style={styles.optionContainer}>
-          {options == null ? (
-            <View style={styles.option}>
-              <Text style={styles.optionText}>vide</Text>
-            </View>
-          ) : (
-            options.map(option => (
-              <TouchableOpacity
-                key={option.value}
-                style={styles.option}
-                onPress={() => {
-                  handleSelectingValue(option);
-                }}>
-                <Text style={styles.optionText}>{option.label}</Text>
-              </TouchableOpacity>
-            ))
-          )}
-        </View>
-      ) : null}
-
-      {/* --------------- Fin de la liste ---------------- */}
+      <Picker
+        style={style}
+        onValueChange={putSelectedValueTo}
+        items={options}
+        placeholder={{label: placeholder, value: ''}}
+        useNativeAndroidPickerStyle={false}
+      />
     </View>
   );
 }
@@ -222,4 +168,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Select;
+export default SelectPicker;

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import FAIcon from 'react-native-vector-icons/FontAwesome5';
 import React, {useState} from 'react';
-import {NotificationData} from '../../../models/class/AnnonceType.ts';
+import {NotificationData} from '../../../models/class/Types.ts';
 import {XMarkIcon} from 'react-native-heroicons/solid';
 
 const Menu = ({
@@ -59,7 +59,7 @@ function Notification({
       <TouchableOpacity
         style={styles.threePoint}
         onPress={handleToogleShowOption}>
-        <FAIcon name={'ellipsis-h'} size={20} color={'rgb(30,30,30)'} />
+        <FAIcon name={'ellipsis-h'} size={16} color={'rgb(30,30,30)'} />
       </TouchableOpacity>
       {showOption ? <Menu handleCloseOption={handleCloseOption} /> : null}
     </View>
@@ -76,18 +76,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
 
     marginBottom: '3%',
-    paddingLeft: '2.5%',
-    paddingRight: '10%',
+    // paddingLeft: '2.5%',
+    // paddingRight: '10%',
     paddingTop: '1.5%',
     paddingBottom: '2.5%',
   },
 
   contenu: {
+    width: '85%',
+    marginLeft: '2%',
+
     // backgroundColor: 'blue',
     color: 'rgb(30,30,30)',
-    fontSize: 17,
+    fontSize: 15,
     fontFamily: 'Poppins-Regular',
-    marginBottom: '2.5%',
+    marginBottom: '5%',
   },
   nomComplet: {
     color: '#CD1F90',
@@ -96,6 +99,7 @@ const styles = StyleSheet.create({
   },
   dateNotif: {
     // color: '#6C40C3',
+    fontSize: 13,
     color: '#CD1F90',
     fontFamily: 'Poppins-LightItalic',
 
@@ -108,15 +112,17 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     position: 'absolute',
     top: '12%',
-    right: '4%',
+    right: '1%',
 
-    width: '5%',
+    width: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   optionsContainer: {
     position: 'absolute',
-    top: '60%',
-    right: '4%',
+    top: '50%',
+    right: '3.5%',
     // zIndex: 1,
     width: '40%',
     height: 'auto',
@@ -126,6 +132,7 @@ const styles = StyleSheet.create({
   },
   optionsHeader: {
     height: 40,
+    backgroundColor: 'rgba(250,250,250,1)',
     // backgroundColor: 'blue',
     width: '100%',
 
@@ -142,8 +149,8 @@ const styles = StyleSheet.create({
   },
   option: {
     height: 60,
-    // backgroundColor: 'rgba(250,250,250,1)',
-    backgroundColor: 'red',
+    backgroundColor: 'rgba(250,250,250,1)',
+    // backgroundColor: 'red',
     borderTopWidth: 2,
     borderColor: 'rgba(30,30,30,0.7)',
 

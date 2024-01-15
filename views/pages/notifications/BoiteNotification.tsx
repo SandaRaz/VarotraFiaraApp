@@ -1,5 +1,4 @@
 import {
-  Dimensions,
   ImageBackground,
   SafeAreaView,
   ScrollView,
@@ -17,7 +16,7 @@ import Notification from './Notification.tsx';
 import {
   BoiteNotificationData,
   NotificationData,
-} from '../../../models/class/AnnonceType.ts';
+} from '../../../models/class/Types.ts';
 
 function BoiteNotification(): React.JSX.Element {
   const navigation = useNavigation<any>();
@@ -37,7 +36,7 @@ function BoiteNotification(): React.JSX.Element {
   const notif1: NotificationData = {
     id: 'NOT0001',
     dateNotification: '2024-01-10 20:57',
-    contenu: 'Sanda Razanajatovo vous a envoyé un messa.',
+    contenu: 'Sanda Razanajatovo vous a envoyé un message.',
   };
   const notif2: NotificationData = {
     id: 'NOT0002',
@@ -53,7 +52,18 @@ function BoiteNotification(): React.JSX.Element {
   const boiteMessage: BoiteNotificationData = {
     id: 'BNT0001',
     proprietaire: utilisateur,
-    notifications: [notif1, notif2, notif3],
+    notifications: [
+      notif1,
+      notif2,
+      notif3,
+      notif3,
+      notif3,
+      notif3,
+      notif3,
+      notif3,
+      notif3,
+      notif3,
+    ],
   };
 
   return (
@@ -80,7 +90,7 @@ function BoiteNotification(): React.JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={styles.scrollable}>
-        <View style={{marginTop: '12.5%'}} />
+        <View style={{marginTop: '18%'}} />
 
         <View style={styles.container}>
           {boiteMessage.notifications.map((notification, index) => (
@@ -91,6 +101,8 @@ function BoiteNotification(): React.JSX.Element {
             />
           ))}
         </View>
+
+        <View style={{marginBottom: '5%'}} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
 
   container: {
     width: '90%',
-    minHeight: 800,
+    minHeight: 500,
     height: 'auto',
 
     flex: 1,

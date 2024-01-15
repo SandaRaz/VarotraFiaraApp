@@ -6,6 +6,7 @@ import Compte from '../pages/comptes/Compte.tsx';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {
   BellIcon,
+  CogIcon,
   ListBulletIcon,
   SquaresPlusIcon,
   UserIcon,
@@ -13,6 +14,7 @@ import {
 import {Text} from 'react-native';
 import Inscription from '../pages/comptes/Inscription.tsx';
 import Login from '../pages/comptes/Login.tsx';
+import Config from '../pages/settings/Config.tsx';
 
 const Tab = createBottomTabNavigator();
 const defaultColor: string = '#6C40C3';
@@ -115,6 +117,28 @@ const NavbarStack: React.FC = () => {
             ),
           })}
         />
+        <Tab.Screen
+          name={'Configuration'}
+          component={Config}
+          options={({route}) => ({
+            headerShown: false,
+            tabBarIcon: ({focused}) => (
+              <CogIcon
+                color={focused ? focusedColor : defaultColor}
+                size={iconeSize}
+              />
+            ),
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={[
+                  styles.label,
+                  {color: focused ? focusedColor : defaultColor},
+                ]}>
+                {route.name}
+              </Text>
+            ),
+          })}
+        />
       </Tab.Navigator>
     </View>
   );
@@ -130,7 +154,7 @@ const styles = StyleSheet.create({
 
     width: '96%',
     height: 45,
-    paddingTop: '1%',
+    paddingTop: '2%',
     paddingBottom: '1%',
     alignSelf: 'center',
     borderRadius: 8,

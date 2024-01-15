@@ -3,6 +3,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -41,6 +42,7 @@ function DatePicker({
   icon,
   iconColor,
   style,
+  containerStyle,
 }: {
   title: string;
   titleColor?: string;
@@ -48,6 +50,7 @@ function DatePicker({
   icon?: React.JSX.Element;
   iconColor?: string;
   style?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle> | StyleProp<TextStyle>;
 }): React.JSX.Element {
   const defaultIconColor: string = '#1db954';
   if (iconColor == null) {
@@ -81,7 +84,7 @@ function DatePicker({
   };
 
   return (
-    <View>
+    <View style={containerStyle}>
       <Text
         style={[
           styles.title,

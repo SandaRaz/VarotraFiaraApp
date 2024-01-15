@@ -13,7 +13,7 @@ import {
   AnnonceData,
   PaysData,
   UtilisateurData,
-} from '../../../models/class/AnnonceType.ts';
+} from '../../../models/class/Types.ts';
 
 function MesAnnonces(): React.JSX.Element {
   const paysProprietaire: PaysData = {

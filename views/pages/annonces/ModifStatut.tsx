@@ -14,7 +14,7 @@ import Input from '../../component/Input.tsx';
 import DatePicker, {parseDateHour} from '../../component/DatePicker.tsx';
 import React, {useState} from 'react';
 import Bouton from '../../component/Bouton.tsx';
-import {VenteData} from '../../../models/class/AnnonceType.ts';
+import {VenteData} from '../../../models/class/Types.ts';
 
 function ModifStatut({
   idAnnonce,
@@ -44,7 +44,9 @@ function ModifStatut({
       prix: parseFloat(getPrix),
       dateVente: parseDateHour(getDateVente),
     };
-    console.log('Objet vente: ' + vente.idAnnonce);
+    console.log(
+      `Objet vente: ${vente.idAnnonce} \n ${vente.prix} \n ${vente.dateVente}`,
+    );
     // ----- call web service -------
   };
 
@@ -97,21 +99,21 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 'auto',
 
-    borderRadius: 10,
-    backgroundColor: 'rgba(250,250,250,0.9)',
+    // borderRadius: 10,
+    backgroundColor: 'rgba(250,250,250,1)',
   },
 
   header: {
     height: '15%',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10,
     backgroundColor: 'rgba(100,100,100,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerLabel: {
     color: '#6C40C3',
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
   },
   quitIcon: {
