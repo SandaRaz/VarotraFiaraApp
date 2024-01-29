@@ -9,17 +9,17 @@ import {
   View,
 } from 'react-native';
 import GlobalStyles from '../../assets/GlobalStyles.tsx';
-import React, {useState} from 'react';
-import {
-  ArrowLeftIcon,
-  EnvelopeIcon, GlobeAltIcon,
-  LockClosedIcon
-} from "react-native-heroicons/solid";
+import React, {useEffect, useMemo, useState} from 'react';
+import {ArrowLeftIcon, GlobeAltIcon} from 'react-native-heroicons/solid';
 import Input from '../../component/Input.tsx';
 import Bouton from '../../component/Bouton.tsx';
 import {useNavigation} from '@react-navigation/native';
+import ConfigManager, {
+  ConfigData,
+} from '../../../models/class/db/ConfigManager.ts';
 
 function Config(): React.JSX.Element {
+  const configManager = useMemo(() => new ConfigManager(), []);
   const navigation = useNavigation<any>();
 
   const iconColor = '#cd1f90';
@@ -31,6 +31,21 @@ function Config(): React.JSX.Element {
   const handleSetBaseUrl = (value: string) => {
     setBaseUrl(value);
   };
+
+  const [currentConfig, setCurrentConfig] = useState<ConfigData | null>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await configManager.findById('CFG7001');
+        setCurrentConfig(result);
+      } catch (error) {
+        console.error('Error fetching current config:', error);
+      }
+    };
+    fetchData();
+
+    // fetchData();
+  }, [configManager]);
 
   // -----------------------------------------------------------
 
@@ -61,6 +76,17 @@ function Config(): React.JSX.Element {
         <View style={{marginTop: '20%'}} />
 
         <View style={styles.container}>
+          <View style={styles.currentConfigContainer}>
+            <Text style={styles.currentConfigLabel}>Base Url actuel: </Text>
+            {currentConfig !== null ? (
+              <Text style={styles.currentConfigValue}>
+                {currentConfig.baseUrl}
+              </Text>
+            ) : (
+              <Text style={styles.currentConfigValue}>Chargement...</Text>
+            )}
+          </View>
+
           <Input
             title={'Base url du site (ex: http://localhost:8080)'}
             placeholder={'www.example.com'}
@@ -79,6 +105,19 @@ function Config(): React.JSX.Element {
                   backgroundColor: validButtonColor,
                 },
               ]}
+              onPress={async () => {
+                const idConfig: string = 'CFG7001';
+                const exist: boolean = await configManager.exist(idConfig);
+                if (exist) {
+                  configManager.updateData(idConfig, getBaseUrl);
+                  const newResult = await configManager.findById('CFG7001');
+                  setCurrentConfig(newResult);
+                } else {
+                  configManager.insertData(idConfig, getBaseUrl);
+                  const newResult = await configManager.findById('CFG7001');
+                  setCurrentConfig(newResult);
+                }
+              }}
             />
           </View>
         </View>
@@ -144,6 +183,29 @@ const styles = StyleSheet.create({
   buttonSBLabel: {
     fontSize: 13,
     fontFamily: 'Poppins-Light',
+  },
+
+  currentConfigContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    backgroundColor: 'rgba(250,250,250,0)',
+
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+  },
+
+  currentConfigLabel: {
+    color: 'rgba(250,250,250,0.9)',
+    fontSize: 13,
+    fontFamily: 'Poppins-Bold',
+  },
+
+  currentConfigValue: {
+    color: 'rgba(250,250,250,0.9)',
+    fontSize: 13,
+    fontFamily: 'Poppins-Regular',
+
+    marginLeft: '2%',
   },
 });
 

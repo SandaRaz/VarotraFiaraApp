@@ -1,9 +1,45 @@
 import axios from 'axios';
 import {CategorieData, MarqueData, MoteurTypeData, PaysData} from './Types.ts';
+import ConfigManager, {ConfigData} from './db/ConfigManager.ts';
+import {useEffect, useState} from 'react';
 
-const baseUrl: string = 'http://192.168.56.1:8080';
+const configManager: ConfigManager = new ConfigManager();
+const idConfig = 'CFG7001';
+
+const baseUrl = configManager
+  .findById(idConfig)
+  .then((value: ConfigData | null) => {
+    if (value != null) {
+      return value.baseUrl;
+    }
+  })
+  .catch((reason: any) => {
+    console.error('There is an error: ', reason);
+  });
+
+function useBaseUrl(idConfig: string): string {
+  const [url, setUrl] = useState<string>('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await configManager.findById(idConfig);
+        if (result != null) {
+          setUrl(result.baseUrl);
+        }
+      } catch (error) {
+        console.error('Error fetching base url in NetworkService', error);
+      }
+    };
+    fetchData();
+  }, [idConfig]);
+
+  return url;
+}
 
 export const getAllCategories = async () => {
+  const baseUrl = useBaseUrl(idConfig);
+
   const url: string = `${baseUrl}/api/categorie/all`;
   try {
     const response = await axios.get(url);
