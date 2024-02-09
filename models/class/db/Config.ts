@@ -1,4 +1,4 @@
-import {openDatabase} from 'react-native-sqlite-storage';
+import {checkTableExistence, sqliteConnect} from './Connex.ts';
 
 interface ConfigData {
   id: string | number;
@@ -8,28 +8,10 @@ interface ConfigData {
 class Config {
   private db: any;
   constructor() {
-    this.db = openDatabase({
-      name: 'VarotraFiara',
-      location: 'default',
-    });
+    this.db = sqliteConnect;
 
-    this.checkTable();
+    checkTableExistence(this.db, 'config2', this.createTable());
   }
-
-  checkTable = async () => {
-    const query_check: string =
-      'SELECT name FROM sqlite_master WHERE type="table" AND name="config";';
-
-    try {
-      const [results] = await this.db.executeSql(query_check);
-
-      if (results.rows.length === 0) {
-        this.createTable();
-      }
-    } catch (err) {
-      console.log('Error checking table:', err);
-    }
-  };
 
   createTable = async () => {
     const query_create: string = `CREATE TABLE IF NOT EXISTS config(
@@ -37,6 +19,7 @@ class Config {
   );`;
     try {
       await this.db.executeSql(query_create);
+      console.log('creating table');
     } catch (err) {
       console.log({err});
     }

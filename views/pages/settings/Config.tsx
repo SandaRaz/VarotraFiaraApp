@@ -67,7 +67,9 @@ function Config(): React.JSX.Element {
           style={GlobalStyles.titleBarIcon}>
           <ArrowLeftIcon color={'#6C40C3'} size={'60%'} />
         </TouchableOpacity>
-        <Text style={GlobalStyles.titleBarLabel}>Configuration</Text>
+        <Text style={GlobalStyles.titleBarLabel}>
+          Configuration VAROTRAFIARA
+        </Text>
       </View>
 
       <ScrollView

@@ -31,7 +31,6 @@ type ImageData = {
 };
 
 type UtilisateurData = {
-  id: string | number;
   nom: string;
   prenoms: string;
   dateNaissance: string;
@@ -58,6 +57,25 @@ type AnnonceData = {
   images: ImageData[] | null | undefined;
 };
 
+type PostAnnonceData = {
+  id: string | number;
+  proprietaireId: string | number;
+  categorieId: string | number;
+  marqueId: string | number;
+  modele: string;
+  typeMoteurId: string | number;
+  consommation: string;
+  nombrePlace: string;
+  nombrePorte: string;
+  annee: string;
+  kilometrage: string | null | undefined;
+  provenanceId: string | null;
+  prix: string;
+  statut: string;
+  dataAnnonce: string;
+  images: ImageData[] | null | undefined;
+};
+
 type NotificationData = {
   id: string | number;
   dateNotification: string;
@@ -79,6 +97,7 @@ export type {
   ImageData,
   UtilisateurData,
   AnnonceData,
+  PostAnnonceData,
   NotificationData,
   BoiteNotificationData,
 };

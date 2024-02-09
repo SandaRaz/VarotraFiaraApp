@@ -3,6 +3,7 @@ import {
   ResultSet,
   Transaction,
 } from 'react-native-sqlite-storage';
+import { sqliteConnect } from "./Connex.ts";
 
 export interface ConfigData {
   id: string;
@@ -13,10 +14,7 @@ class ConfigManager {
   private db: any;
 
   constructor() {
-    this.db = openDatabase({
-      name: 'VarotraFiara',
-      location: 'default',
-    });
+    this.db = sqliteConnect;
 
     this.createTable();
   }
@@ -96,7 +94,7 @@ class ConfigManager {
 
     try {
       await this.db.executeSql(query_insert, params);
-      console.log('Data inserted successfully.');
+      console.log('Config inserted successfully.');
     } catch (err) {
       console.log('Error inserting data:', err);
     }
@@ -108,7 +106,7 @@ class ConfigManager {
 
     try {
       await this.db.executeSql(query_update, params);
-      console.log('Data updated successfully.');
+      console.log('Config updated successfully.');
     } catch (err) {
       console.log('Error updating data:', err);
     }

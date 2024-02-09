@@ -18,6 +18,9 @@ import {
 import Input from '../../component/Input.tsx';
 import Bouton from '../../component/Bouton.tsx';
 import {useNavigation} from '@react-navigation/native';
+import {loginUser} from '../../../models/class/services/CompteService.ts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UtilisateurData } from "../../../models/class/Types.ts";
 
 function Login(): React.JSX.Element {
   const navigation = useNavigation<any>();
@@ -35,6 +38,28 @@ function Login(): React.JSX.Element {
   const [getMdp, setMdp] = useState('');
   const handleSetMdp = (value: string) => {
     setMdp(value);
+  };
+
+  const handleLogin = async () => {
+    console.log('handling Login');
+    try {
+      const token = await loginUser(getMail, getMdp);
+      console.log('Voici votre Token: ' + token);
+
+      if (token) {
+        await AsyncStorage.setItem('token', token);
+
+        // const user: UtilisateurData = await
+      }
+
+      navigation.navigate('NavbarStack', {screen: 'Nouvelle'});
+    } catch (error: any) {
+      if (error.message.toLowerCase().includes('network')) {
+        console.log('Network Error: ' + error);
+        navigation.navigate('NavbarStack', {screen: 'Configuration'});
+      }
+      console.error('Erreur de connexion: ', error.message);
+    }
   };
 
   // -----------------------------------------------------------
@@ -101,6 +126,7 @@ function Login(): React.JSX.Element {
                   backgroundColor: validButtonColor,
                 },
               ]}
+              onPress={handleLogin}
             />
           </View>
         </View>

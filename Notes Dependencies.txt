@@ -17,7 +17,10 @@ npm install @react-navigation/native @react-navigation/stack
 npm install @react-navigation/native-stack
 npm install @react-navigation/bottom-tabs
 npm install @react-navigation/drawer
+
+npm uninstall react-native-reanimated
 npm install react-native-reanimated
+
 npm install react-native-screens react-native-safe-area-context
 npm install react-native-gesture-handler
 npx pod-install ios
@@ -27,8 +30,10 @@ npm install @react-navigation/bottom-tabs
 
 React Native Picker: (*)
 Select: npm install react-native-picker-select
-Image: npm install react-native-image-picker
-Image Resizer: npm install react-native-image-resizer
+Image: 
+	npm install react-native-image-picker
+Image Resizer: 
+	npm install react-native-image-resizer
 npm install @react-native-picker/picker --save
 npm install react-native-wheel-pick
 
@@ -51,3 +56,7 @@ npm install axios
 
 React Native Sqlite:
 npm install --save react-native-sqlite-storage
+
+React Native AsyncStorage:
+npm install @react-native-async-storage/async-storage
+

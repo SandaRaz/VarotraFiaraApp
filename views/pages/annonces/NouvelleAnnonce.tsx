@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import GlobalStyles from '../../assets/GlobalStyles.tsx';
 import {
   ArrowLeftIcon,
@@ -29,19 +29,39 @@ import {parseDateHour} from '../../component/DatePicker.tsx';
 import SelectPicker from '../../component/SelectPicker.tsx';
 import ImageUploader from '../../component/ImageUploader.tsx';
 import {Asset} from 'react-native-image-picker';
-import RequestService from '../../../models/class/RequestService.ts';
-import {MarqueData} from '../../../models/class/Types.ts';
-import axios from 'axios';
+import {getAllMarques} from '../../../models/class/services/MarqueService.ts';
+import {getAllPays} from '../../../models/class/services/PaysService.ts';
+import {useLoginToken} from '../../../models/class/db/Token.ts';
+import Wait from '../loading/Wait.tsx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getAllCategories} from '../../../models/class/services/CategorieService.ts';
+import {getAllTypeMoteurs} from '../../../models/class/services/TypeMoteur.ts';
 import {
-  getAllCategories,
-  getAllMarques,
-  getAllPays,
-} from '../../../models/class/NetworkService.ts';
-
-const requestService = new RequestService();
+  ImageData,
+  PaysData,
+  PostAnnonceData,
+} from '../../../models/class/Types.ts';
+import {publierAnnonce} from '../../../models/class/services/AnnonceService.ts';
 
 function NouvelleAnnonce(): React.JSX.Element {
+  console.log('Opening NouvelleAnnonce');
+
   const navigation = useNavigation<any>();
+
+  const isFocused = useIsFocused();
+  const checkToken = useLoginToken();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkUserToken = async () => {
+      await checkToken();
+      setLoading(false);
+    };
+
+    if (isFocused) {
+      checkUserToken();
+    }
+  }, [isFocused, checkToken]);
 
   const iconColor = '#cd1f90';
   const validButtonColor = '#6C40C3';
@@ -60,18 +80,39 @@ function NouvelleAnnonce(): React.JSX.Element {
   }
 
   useEffect(() => {
-    getAllMarques().then(value => {
-      if (value !== undefined) {
-        value.map(marque =>
-          marques.push({value: marque.id, label: marque.nom}),
-        );
+    const retrievingData = async () => {
+      const token = await AsyncStorage.getItem('token');
+
+      if (token) {
+        getAllCategories(token).then(value => {
+          if (value !== undefined) {
+            value.map(categorie =>
+              categories.push({value: categorie.id, label: categorie.nom}),
+            );
+          }
+        });
+        getAllMarques(token).then(value => {
+          if (value !== undefined) {
+            value.map(marque =>
+              marques.push({value: marque.id, label: marque.nom}),
+            );
+          }
+        });
+        getAllTypeMoteurs(token).then(value => {
+          if (value !== undefined) {
+            value.map(carburant =>
+              typeMoteurs.push({value: carburant.id, label: carburant.type}),
+            );
+          }
+        });
+        getAllPays(token).then(value => {
+          if (value !== undefined) {
+            value.map(p => pays.push({value: p.id, label: p.nom}));
+          }
+        });
       }
-    });
-    getAllPays().then(value => {
-      if (value !== undefined) {
-        value.map(p => pays.push({value: p.id, label: p.nom}));
-      }
-    });
+    };
+    retrievingData();
   });
 
   // -------------------- GET VALUE STATES ---------------------
@@ -90,8 +131,54 @@ function NouvelleAnnonce(): React.JSX.Element {
   const [getDateAnnonce, setDateAnnonce] = useState('');
   const [getImages, setImages] = useState<Asset[]>([]);
   // -----------------------------------------------------------
+  const images: ImageData[] = [];
+  getImages.map(asset => {
+    if (asset.fileName && asset.id) {
+      images.push({nomImage: asset.fileName + asset.id, base64: asset.base64});
+    }
+  });
+
+  console.log('Images: ' + images);
+
+  const newAnnonce: PostAnnonceData = {
+    id: '',
+    proprietaireId: '',
+    categorieId: getIdCategorie,
+    marqueId: getIdMarque,
+    modele: getModele,
+    typeMoteurId: getIdTypeMoteur,
+    consommation: getConsommation,
+    nombrePlace: getNombrePlace,
+    nombrePorte: getNombrePorte,
+    annee: getAnnee,
+    kilometrage: getKilometrage,
+    provenanceId: getIdProvenance,
+    prix: getPrix,
+    statut: getStatut,
+    dataAnnonce: getDateAnnonce,
+    images: images,
+  };
+
+  const handleNewAnnonce = async () => {
+    try {
+      console.log('Publier maintenant une annonce');
+
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        await publierAnnonce(token, newAnnonce);
+      }
+    } catch (error: any) {
+      console.error('Erreur de connexion: ', error.message);
+    }
+  };
 
   const renderIcon = () => <EnvelopeIcon />;
+
+  if (isFocused) {
+    if (loading) {
+      return <Wait />;
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -156,13 +243,13 @@ function NouvelleAnnonce(): React.JSX.Element {
               containerStyle={styles.form}
             />
             <Select
-              options={categories}
+              options={typeMoteurs}
               title={'Type de carburant'}
               placeholder={' . . . '}
               icon={<FireIcon />}
               iconColor={iconColor}
               putSelectedValueTo={value => {
-                setIdMarque(value);
+                setIdTypeMoteur(value);
               }}
               containerStyle={styles.form}
             />
@@ -267,6 +354,7 @@ function NouvelleAnnonce(): React.JSX.Element {
                   backgroundColor: validButtonColor,
                 },
               ]}
+              onPress={handleNewAnnonce}
             />
           </View>
         </View>
